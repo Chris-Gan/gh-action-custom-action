@@ -9,6 +9,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Install NodeJs
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
     - name: Cache dependencies
       if: inputs.caching == true
       id: cache

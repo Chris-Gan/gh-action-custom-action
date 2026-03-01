@@ -6,6 +6,11 @@ inputs:
     required: false
     default: true
     type: boolean
+outputs:
+  used-cache:
+    description: Whether the cache was used
+    value: ${{ steps.install.cache }}
+
 runs:
   using: composite
   steps:
@@ -21,7 +26,9 @@ runs:
         path: node_modules
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
+      id: install
       if: steps.cache.outputs.cache-hit != 'true' || !inputs.caching
-      run: npm ci
+      run: |
+        npm ci
+        echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
       shell: bash
-# demo
